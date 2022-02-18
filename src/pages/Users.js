@@ -1,8 +1,12 @@
-import { filter } from 'lodash';
+import { filter, get } from 'lodash';
 import { Icon } from '@iconify/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import { Link as RouterLink } from 'react-router-dom';
+import { getUsersAction } from 'store/actions/user';
+import { getClassesAction } from 'store/actions/class';
+import { getSchoolsAction } from 'store/actions/school';
 // material
 import {
   Card,
@@ -34,10 +38,10 @@ import USERLIST from '../_mocks_/user';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'username', label: 'Username', alignRight: false },
-  { id: 'firstName', label: 'First name', alignRight: false },
-  { id: 'lastName', label: 'Last name', alignRight: false },
-  { id: 'email', label: 'Email', alignRight: false },
+  { id: 'userId', label: 'User ID', alignRight: false },
+  { id: 'classId', label: 'Class ID', alignRight: false },
+  { id: 'studentId', label: 'Student ID', alignRight: false },
+  { id: 'schoolId', label: 'School ID', alignRight: false },
   { id: '' }
 ];
 
@@ -67,10 +71,7 @@ function applySortFilter(array, comparator, query) {
     return a[1] - b[1];
   });
   if (query) {
-    return filter(
-      array,
-      (_user) => _user.username.toLowerCase().indexOf(query.toLowerCase()) !== -1
-    );
+    return filter(array, (_user) => _user.userId.toLowerCase().indexOf(query.toLowerCase()) !== -1);
   }
   return stabilizedThis.map((el) => el[0]);
 }
@@ -83,6 +84,18 @@ export default function Users() {
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [showAdd, setShowAdd] = useState(false);
+
+  const { users } = useSelector((state) => get(state, 'userReducers', false));
+  const { classes } = useSelector((state) => get(state, 'classesReducers', false));
+  const { schools } = useSelector((state) => get(state, 'schoolsReducers', false));
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    console.log(classes, schools, users);
+    dispatch(getUsersAction());
+    dispatch(getClassesAction());
+    dispatch(getSchoolsAction());
+  }, [dispatch]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -133,9 +146,9 @@ export default function Users() {
   const handleShowAdd = () => setShowAdd(true);
   const handleCloseAdd = () => setShowAdd(false);
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - users?.data.length) : 0;
 
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(users?.data, getComparator(order, orderBy), filterName);
 
   const isUserNotFound = filteredUsers.length === 0;
 
@@ -181,7 +194,7 @@ export default function Users() {
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { id, email, username, firstName, lastName } = row;
+                      const { id, userId, classId, schoolId, studentId } = row;
                       const isItemSelected = selected.indexOf(id) !== -1;
 
                       return (
@@ -199,10 +212,10 @@ export default function Users() {
                               onChange={(event) => handleClick(event, id)}
                             />
                           </TableCell>
-                          <TableCell align="left">{username}</TableCell>
-                          <TableCell align="left">{firstName}</TableCell>
-                          <TableCell align="left">{lastName}</TableCell>
-                          <TableCell align="left">{email}</TableCell>
+                          <TableCell align="left">{userId}</TableCell>
+                          <TableCell align="left">{classId}</TableCell>
+                          <TableCell align="left">{schoolId}</TableCell>
+                          <TableCell align="left">{studentId}</TableCell>
                           <TableCell align="right">
                             <UserMoreMenu user={row} />
                           </TableCell>

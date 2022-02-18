@@ -1,4 +1,5 @@
 import { Navigate, useRoutes } from 'react-router-dom';
+import { isAuth } from 'helpers/isAuth';
 // layouts
 import DashboardLayout from './layouts/dashboard';
 import LogoOnlyLayout from './layouts/LogoOnlyLayout';
@@ -35,7 +36,7 @@ export default function Router() {
         { path: 'login', element: <Login /> },
         { path: 'register', element: <Register /> },
         { path: '404', element: <NotFound /> },
-        { path: '/', element: true ? <Navigate to="/dashboard" /> : <Navigate to="login" /> },
+        { path: '/', element: isAuth() ? <Navigate to="/dashboard" /> : <Navigate to="login" /> },
         { path: '*', element: <Navigate to="/404" /> }
       ]
     },

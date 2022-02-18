@@ -17,6 +17,8 @@ import {
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 
+import { login } from 'api/user';
+
 // ----------------------------------------------------------------------
 
 export default function LoginForm() {
@@ -35,8 +37,13 @@ export default function LoginForm() {
       remember: true
     },
     validationSchema: LoginSchema,
-    onSubmit: (values) => {
-      navigate('/dashboard', { replace: true });
+    onSubmit: ({ email, password }) => {
+      try {
+        login(email, password);
+        navigate('/dashboard', { replace: true });
+      } catch (error) {
+        console.log(error);
+      }
     }
   });
 

@@ -2,8 +2,11 @@
 import 'simplebar/src/simplebar.css';
 
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+
 import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
+import store from 'store';
 
 //
 import App from './App';
@@ -13,11 +16,13 @@ import reportWebVitals from './reportWebVitals';
 // ----------------------------------------------------------------------
 
 ReactDOM.render(
-  <HelmetProvider>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </HelmetProvider>,
+  <Provider store={store}>
+    <HelmetProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </HelmetProvider>
+  </Provider>,
   document.getElementById('root')
 );
 
