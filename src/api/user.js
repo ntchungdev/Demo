@@ -1,12 +1,13 @@
 import Request from 'helpers/request';
+import axios from 'axios';
 import { API_URL } from '../constants';
 
 const USER_URL = `${API_URL}`;
 
-export const login = async (email, password) => {
+export const login = async (username, password) => {
   try {
     const { data: token } = await Request.post(`${USER_URL}/users/login`, {
-      email,
+      username,
       password
     });
     localStorage.setItem('token', token);
@@ -19,7 +20,7 @@ export const login = async (email, password) => {
 
 export const getUsers = async () => {
   try {
-    const { data } = await Request.get(`${USER_URL}/user_access`);
+    const data = await Request.get(`${USER_URL}/user_access`);
 
     return data;
   } catch (error) {

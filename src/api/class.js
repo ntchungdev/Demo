@@ -5,7 +5,7 @@ const CLASS_URL = `${API_URL}/classes`;
 
 export const getClasses = async () => {
   try {
-    const { data } = await Request.get(`${CLASS_URL}`);
+    const data = await Request.get(`${CLASS_URL}`);
 
     return data;
   } catch (error) {

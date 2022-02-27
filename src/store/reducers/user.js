@@ -5,15 +5,7 @@ const initialState = {
     loading: false,
     success: false,
     error: null,
-    data: [
-      {
-        id: '1',
-        userId: '1',
-        classId: '1',
-        studentId: '1',
-        schoolId: '1'
-      }
-    ]
+    data: null
   }
 };
 
