@@ -1,5 +1,4 @@
 import Request from 'helpers/request';
-import axios from 'axios';
 import { API_URL } from '../constants';
 
 const USER_URL = `${API_URL}`;

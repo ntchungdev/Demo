@@ -40,9 +40,9 @@ import USERLIST from '../_mocks_/user';
 
 const TABLE_HEAD = [
   { id: 'userId', label: 'User ID', alignRight: false },
-  { id: 'classId', label: 'Class ID', alignRight: false },
-  { id: 'studentId', label: 'Student ID', alignRight: false },
-  { id: 'schoolId', label: 'School ID', alignRight: false },
+  { id: 'classname', label: 'Classname', alignRight: false },
+  { id: 'student', label: 'Total student', alignRight: false },
+  { id: 'school', label: 'School', alignRight: false },
   { id: '' }
 ];
 
@@ -198,9 +198,11 @@ export default function Users() {
                       {filteredUsers
                         ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         ?.map((row) => {
-                          const { id, userId, classId, schoolId, studentId } = row;
+                          const { id, userId, classes, schools, students } = row;
                           const isItemSelected = selected.indexOf(id) !== -1;
-
+                          const className = classes[0].name;
+                          const schoolName = schools[0].name;
+                          const totalStudent = students.length;
                           return (
                             <TableRow
                               hover
@@ -217,9 +219,9 @@ export default function Users() {
                                 />
                               </TableCell>
                               <TableCell align="left">{userId}</TableCell>
-                              <TableCell align="left">{classId}</TableCell>
-                              <TableCell align="left">{schoolId}</TableCell>
-                              <TableCell align="left">{studentId}</TableCell>
+                              <TableCell align="left">{className}</TableCell>
+                              <TableCell align="left">{totalStudent}</TableCell>
+                              <TableCell align="left">{schoolName}</TableCell>
                               <TableCell align="right">
                                 <UserMoreMenu user={row} />
                               </TableCell>
